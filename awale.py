@@ -12,18 +12,33 @@ class Partie(object):
         self.graines_joueur2 = 0
     
     def fin(self):
+        rep = False
         if self.joueur1 and sum(self.liste[6:])==0:
+            rep = True
             for i in range(0,6):
                 if self.liste[i]>5-i:
-                    return False
-            return True
-        elif not self.joueur1 and sum(self.liste[:12])==0:
+                    rep = False
+        elif not self.joueur1 and sum(self.liste[:6])==0:
+            rep = True
             for i in range(6,12):
                 if self.liste[i]>11-i:
-                    return False
-            return True
+                    rep = False
+        return rep
+    
+    
+    
+    def jouables(self):
+        j = tuple(i for i in list(range(0,6) if self.joueur1 else range(6,12)) if self.liste[i]!=0)
+        if self.joueur1 and sum(self.liste[6:])==0:
+            return tuple(i for i in j if self.liste[i]>5-i)
+        elif not self.joueur1 and sum(self.liste[:6])==0:
+            return tuple(i for i in j if self.liste[i]>11-i)
         else:
-            return False
+            return j
+            
+                
+                
+    
     
     def coup(self, trou_depart):
         graines = self.liste[trou_depart]     # On récupère le nombre de graines dans le trou

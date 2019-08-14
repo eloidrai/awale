@@ -2,7 +2,7 @@
 
 class Partie(object):
     def __init__(self):
-        self.liste = [4, 1, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 1]
+        self.liste = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
         self.joueur1 = True
         self.fin = False
         self.graines_joueur1 = 0

@@ -3,7 +3,7 @@
 class Partie(object):
     """Gère l'ensemble des opérations sur les grains"""
     def __init__(self):
-        self.liste = [0, 0, 0, 0, 0, 1, 4, 4, 0, 0, 0, 0]
+        self.liste = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
         self.joueur1 = True     # Est vrai si c'est au joueur 1 de jouer
         self.fin = False
         self.graines_joueur1 = 0
@@ -71,7 +71,7 @@ class Partie(object):
                     self.graines_joueur1+=sum(self.liste)
                 else:
                     self.graines_joueur2+=sum(self.liste)
-                liste = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                self.liste = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 self.fin = True
                 print("Partie terminée.")
                 print("Le joueur n° %s a gagné." %("1" if self.graines_joueur1>self.graines_joueur2 else "2"))

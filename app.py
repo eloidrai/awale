@@ -17,7 +17,7 @@ class Application(Tk):
         self.canvas.pack(side=LEFT, padx=3, pady=3)
         self.plateau = Plateau(self.canvas)
         self.zone = Frame(self)             # Cadre
-        self.joueur = Canvas(self.zone, width=160, height=30, bg='yellow')  # Joueur
+        self.joueur = Canvas(self.zone, width=160, height=30)  # Joueur
         self.joueur.pack()
         self.id_joueur = None
         self.entree = Entry(self.zone)      # Entrée
@@ -39,7 +39,7 @@ class Application(Tk):
         try:
             t = {"A":0,"B":1,"C":2,"D":3,"E":4,"F":5,"f":6,"e":7,"d":8,"c":9,"b":10,"a":11}[self.entree.get()]
         except:
-            self.correcteur("Mauvaise saisie")
+            self.correcteur("Saisie incorecte")
             return None
         finally:
             self.entree.delete(0)
@@ -49,19 +49,10 @@ class Application(Tk):
         else:
             self.correcteur("")
             self.p.coup(t)
-            self.p.joueur1 = not self.p.joueur1
-            if self.p.jouables==():       # Fin (car le joueur ne peut plus nourrir son adversaire)
-                if self.p.joueur1:
-                    self.p.graines_joueur1+=sum(self.p.liste)
-                else:
-                    self.p.graines_joueur2+=sum(self.p.liste)
-                self.p.liste = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             self.plateau.ecrire_scores((self.p.graines_joueur1, self.p.graines_joueur2))
             self.plateau.ecrire_nombres(self.p.liste)
             self.affiche_joueur()
             
-            
-    
     def affiche_joueur(self):
         if self.id_joueur!=None:
             self.joueur.delete(self.id_joueur)

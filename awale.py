@@ -3,11 +3,11 @@
 class Partie(object):
     """Gère l'ensemble des opérations sur les grains"""
     def __init__(self):
-        self.liste = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+        self.liste = [4, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1]
         self.joueur1 = True     # Est vrai si c'est au joueur 1 de jouer
         self.fin = False
-        self.graines_joueur1 = 0
-        self.graines_joueur2 = 0
+        self.graines_joueur1 = 12
+        self.graines_joueur2 = 7
     
     @property
     def jouables(self):
@@ -19,6 +19,14 @@ class Partie(object):
             return tuple(i for i in j if self.liste[i]>11-i)
         else:
             return j
+    
+    @property
+    def vainqueur(self):
+        """Renvoie le vainqueur"""
+        if not self.fin:
+            return None
+        else:
+            return (1 if self.graines_joueur1>self.graines_joueur2 else 2)
     
     def coup(self, trou_depart):
         """Effectue les semailles et les récoltes"""
@@ -44,6 +52,14 @@ class Partie(object):
                 self.graines_joueur1 += self.gain  # ...et les graines récoltés
             else:
                 self.graines_joueur2 += self.gain
+        self.joueur1 = not self.joueur1 # Changement de joueur
+        if self.jouables==():       # Fin (car le joueur ne peut plus nourrir son adversaire)
+            if self.joueur1:
+                self.graines_joueur1+=sum(self.liste)
+            else:
+                self.graines_joueur2+=sum(self.liste)
+            self.liste = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            self.fin = True
     
     def jouer(self):
         """Permet de jouer en mode non-graphique"""
@@ -65,17 +81,8 @@ class Partie(object):
             print(self.liste)
             if self.gain!=0:
                 print("+1 point" if self.gain==1 else "+ %s points" %str(self.gain))
-            self.joueur1 = not self.joueur1 # Changement de joueur
-            if self.jouables==():       # Fin (car le joueur ne peut plus nourrir son adversaire)
-                if self.joueur1:
-                    self.graines_joueur1+=sum(self.liste)
-                else:
-                    self.graines_joueur2+=sum(self.liste)
-                self.liste = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                self.fin = True
-                print("Partie terminée.")
-                print("Le joueur n° %s a gagné." %("1" if self.graines_joueur1>self.graines_joueur2 else "2"))
-                break
+        print("Partie terminée.")
+        print("Le joueur n° %s a gagné." %str(self.vainqueur))
 
 if __name__ == '__main__':
     p = Partie()

@@ -45,7 +45,7 @@ class Partie(object):
         while (self.liste[trou%12]==2 or self.liste[trou%12]==3) and ((self.joueur1 and trou%12>5) or (not self.joueur1 and trou%12<6)):    # Calcule les prises en partant du dernier trou
             prises.append(trou%12)
             trou-=1
-        self.gain = len(prises)
+        self.gain = sum(prises)
         if ((self.joueur1 and len([i for i in self.liste[6:] if i==0])+self.gain==6) or (not self.joueur1 and len([i for i in self.liste[:6] if i==0])+self.gain==6)) or len(prises)==0:  # On ne prend pas si cela affame
             pass
         else:

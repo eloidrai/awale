@@ -8,7 +8,7 @@ Il est constitué des classes `Partie` et `Application`, la première gérant le
 Il n'y a presque rien à faire sinon executer le script d'une des manières suivantes :
 
 ```shell
-python3 awale.py
+python3 awale.pyw
 ```
 
 ```````
@@ -19,7 +19,7 @@ Sous Windows (à condition que Python soit installé), il n'y a qu'à cliquer su
 
 ## En console
 
-L'interface en console est nettement moins conviviale. If faut d'abord importer le script dans python comme suit :
+L'interface en console est nettement moins conviviale et moins aboutie. If faut d'abord importer le script dans python comme suit :
 
 ``````python
 from awale import Partie
@@ -41,4 +41,19 @@ On notera que les trous sont représentés par une une liste qui s'affiche aprè
 
 ## Avec l'API
 
-La référence de l'API est à venir...
+### Commencer par instancier
+
+Il faut commencer par instancier comme expliqué plus haut.
+
+### Quelques attributs utiles de la classe `Partie`
+
+* _Partie._**liste** - Contient la liste des valeurs dans les cases
+* _Partie._**joueur1** - Contient un booléen indiquant si le tour en cours est celui du premier joueur ou non
+* _Partie_.**score** - Liste de 2 éléments contenant le score de chaque joueur
+* _Partie_.**jouables** - Tuple contenant les rangs des cases jouables
+* _Partie_.**fin** - Booléen indiquant si c'est la fin
+* _Partie_.**vainqueur** - Vaut `None` pendant la partie, puis prend la valeur `1` ou `2` à la fin (selon que c'est le premier ou le second joueur qui a gagné)
+
+### La seule méthode utile de la classe `Partie`
+
+* _Partie_.**coup(_trou_depart_)** - Cette méthode prend en argument le rang de la case à jouer et effectue toutes les opérations d'un tour (semaille, récolte, test de fin...)

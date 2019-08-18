@@ -45,8 +45,8 @@ class Partie(object):
         while (self.liste[trou%12]==2 or self.liste[trou%12]==3) and ((self.joueur1 and trou%12>5) or (not self.joueur1 and trou%12<6)):    # Calcule les prises en partant du dernier trou
             prises.append(trou%12)
             trou-=1
-        self.gain = sum(prises)
-        if ((self.joueur1 and len([i for i in self.liste[6:] if i==0])+self.gain==6) or (not self.joueur1 and len([i for i in self.liste[:6] if i==0])+self.gain==6)) or len(prises)==0:  # On ne prend pas si cela affame
+        self.gain = sum([self.liste[i] for i in prises])
+        if ((self.joueur1 and len([i for i in self.liste[6:] if i==0])+len(prises)==6) or (not self.joueur1 and len([i for i in self.liste[:6] if i==0])+len(prises)==6)) or len(prises)==0:  # On ne prend pas si cela affame
             pass
         else:
             for i in prises:
@@ -67,6 +67,7 @@ class Partie(object):
     def jouer(self):
         """Permet de jouer en mode non-graphique"""
         print(" "*10+"Jeu d'awalé")
+        print("\n"+str([self.liste[i] for i in range(11, 5,-1)])+"\n"+str(self.liste[:6]))
         while not self.fin:     # Boucle principale
             print("\n--Joueur n°1 (%s pts)--" %self.score[0] if self.joueur1 else "\n--Joueur n°2 (%s pts)--" %self.score[1])
             while True:
@@ -81,7 +82,7 @@ class Partie(object):
                     print("Vous ne pouvez pas jouer cela.")
                     continue
             self.coup(t)
-            print(self.liste)
+            print(str([self.liste[i] for i in range(11, 5,-1)])+"\n"+str(self.liste[:6]))
             if self.gain!=0:
                 print("+1 point" if self.gain==1 else "+ %s points" %str(self.gain))
         print("Partie terminée.")

@@ -19,7 +19,7 @@ Sous Windows (à condition que Python soit installé), il n'y a qu'à cliquer su
 
 ## En console
 
-L'interface en console est nettement moins conviviale et moins aboutie. If faut d'abord importer le script dans python comme suit :
+L'interface en console est nettement moins conviviale et moins aboutie. Il faut renomer `awale.pyw` en `awale.py`. Puis, il faut importer le script dans python comme suit :
 
 ``````python
 from awale import Partie
@@ -37,7 +37,7 @@ Enfin il faut executer la méthode jouer.
 p.jouer()
 ``````
 
-On notera que les trous sont représentés par une une liste qui s'affiche après chaque coup. Le sens de lecture est le sens anti-horaire et la liste commence sur la première case du premier joueur.
+Le premier joueur est en bas et les cases sont numérotées (de 0 à 11) de la case de gauche du joueur du bas à celle de droite du joueur du haut.
 
 ## Avec l'API
 

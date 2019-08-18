@@ -7,12 +7,12 @@ Il est constitué des classes `Partie` et `Application`, la première gérant le
 
 Il n'y a presque rien à faire sinon executer le script d'une des manières suivantes :
 
-```shell
+```sh
 python3 awale.pyw
 ```
 
-```````
-./awale.py
+```````sh
+./awale.pyw
 ```````
 
 Sous Windows (à condition que Python soit installé), il n'y a qu'à cliquer sur le fichier.
@@ -37,7 +37,7 @@ Enfin il faut executer la méthode jouer.
 p.jouer()
 ``````
 
-Le premier joueur est en bas et les cases sont numérotées (de 0 à 11) de la case de gauche du joueur du bas à celle de droite du joueur du haut.
+Le premier joueur est en bas et les cases sont numérotées (de 0 à 11) de la case de gauche du joueur du bas à celle de  gauche du joueur du haut.
 
 ## Avec l'API
 

@@ -97,7 +97,7 @@ class Application(Tk):
         barre_menu = Menu(self)        # Menus
         menu_jeu = Menu(barre_menu, tearoff=0)
         barre_menu.add_cascade(label="Jeu", menu=menu_jeu)
-        menu_jeu.add_command(label="Commencer une partie", command=self.debut_jeu)
+        menu_jeu.add_command(label="(Re)commencer une partie", command=self.debut_jeu)
         menu_jeu.add_separator()
         menu_jeu.add_command(label="Quitter", command=self.destroy)
         self.config(menu=barre_menu)
@@ -112,21 +112,13 @@ class Application(Tk):
             self.canvas.create_text(i*90+15, 190, text=liste_lettres2[i], font=('serif', 11), fill='green')
         self.canvas.create_line(10, 175, 540, 175, fill='brown')
         self.canvas.pack(side=LEFT, padx=3, pady=3)
-        self.zone = Frame(self)             # Cadre
-        self.canvas_joueur = Canvas(self.zone, width=160, height=30)  # Joueur
-        self.canvas_joueur.pack(pady=8)
-        self.entree = Entry(self.zone)      # Entrée
-        self.entree.pack()
-        self.entree.bind('<Return>', self.jouer)
-        self.canvas_correctif = Canvas(self.zone, width=160, height=20)   # Correctif
-        self.canvas_correctif.pack()
-        Button(self.zone, text="Valider", bg='grey', command=self.jouer).pack() # Bouton
         self.id_joueur = None       # Identifiants (pour pouvoir supprimer)
         self.id_correctif = None
         self.ids_nombres = []
         self.ids_joueurs = []
         self.id_couronne = None
-        self.canvas.bind('<Button-1>', self.automatique)
+        self.canvas.bind('<Button-1>', self.detection_coup)
+        self.debut_jeu()
         
     def debut_jeu(self):        # Au début d'une partie
         self.p = Partie()
@@ -134,11 +126,9 @@ class Application(Tk):
             canvas.delete(self.id_couronne)
         self.ecrire_nombres(self.p.liste)
         self.ecrire_scores((self.p.score[0], self.p.score[1]))
-        self.zone.pack(side=RIGHT, padx=3)
         self.affiche_joueur()
     
-    def automatique(self, event):
-        self.entree.delete(0, len(self.entree.get()))
+    def detection_coup(self, event):
         def lettre(x, y):
             if 85<y<160 and (15<x<540 and 0<(x-15)%90<75):
                 return ["a","b","c","d","e","f"][(x-15)//90]
@@ -146,22 +136,16 @@ class Application(Tk):
                 return ["A","B","C","D","E","F"][(x-15)//90]
             else:
                 return ""
-        self.entree.insert(0,lettre(event.x, event.y))
-        self.entree.focus()
+        self.jouer(lettre(event.x, event.y))
 
-    def jouer(self, event=None):        # Fonction principale
+    def jouer(self, trou):        # Fonction principale
         try:
-            t = {"A":0,"B":1,"C":2,"D":3,"E":4,"F":5,"f":6,"e":7,"d":8,"c":9,"b":10,"a":11}[self.entree.get()]
+            t = {"A":0,"B":1,"C":2,"D":3,"E":4,"F":5,"f":6,"e":7,"d":8,"c":9,"b":10,"a":11}[trou]
         except:
-            self.affiche_correctif("Saisie incorecte")
             return None
-        finally:
-            self.entree.delete(0, len(self.entree.get()))
         if not t in self.p.jouables:
-            self.affiche_correctif("Tu ne peux pas jouer cela.")
             return None
         else:
-            self.affiche_correctif("")
             self.p.coup(t)
             self.ecrire_scores((self.p.score[0], self.p.score[1]))
             self.ecrire_nombres(self.p.liste)
@@ -186,14 +170,7 @@ class Application(Tk):
         self.ids_joueurs.append(self.canvas.create_text(555/2, 35, text="Joueur n°2 (%s)" %(str(scores[1])+(" pts." if scores[1]>=2 else " pt.")), font=('Helvetica', 20)))
     
     def affiche_joueur(self):           # Affiche le joueur dont c'est le tour
-        if self.id_joueur!=None:
-            self.canvas_joueur.delete(self.id_joueur)
-        self.id_joueur = self.canvas_joueur.create_text(80, 15, text=("Joueur n°1" if self.p.joueur1 else "Joueur n°2"), font=('Arial', 15))
-
-    def affiche_correctif(self, message):   # Quand la saisie n'est pas valide
-        if self.id_correctif!=None:
-            self.canvas_correctif.delete(self.id_correctif)
-        self.id_correctif = self.canvas_correctif.create_text(80, 10, text=message, font=('Courrier', 8), fill='red')
+        self.title("Jeu d'awale - " + ("Joueur 1" if self.p.joueur1 else "Joueur 2"))
         
     def couronne(self):                     # Affiche une couronne à coté du vainqueur
         x = 110

@@ -126,6 +126,7 @@ class Application(Tk):
         self.ids_nombres = []
         self.ids_joueurs = []
         self.id_couronne = None
+        self.canvas.bind('<Button-1>', self.automatique)
         
     def debut_jeu(self):        # Au début d'une partie
         self.p = Partie()
@@ -135,7 +136,19 @@ class Application(Tk):
         self.ecrire_scores((self.p.score[0], self.p.score[1]))
         self.zone.pack(side=RIGHT, padx=3)
         self.affiche_joueur()
-        
+    
+    def automatique(self, event):
+        self.entree.delete(0, len(self.entree.get()))
+        def lettre(x, y):
+            if 85<y<160 and (15<x<540 and 0<(x-15)%90<75):
+                return ["a","b","c","d","e","f"][(x-15)//90]
+            elif 190<y<265 and 15<x<540:
+                return ["A","B","C","D","E","F"][(x-15)//90]
+            else:
+                return ""
+        self.entree.insert(0,lettre(event.x, event.y))
+        self.entree.focus()
+
     def jouer(self, event=None):        # Fonction principale
         try:
             t = {"A":0,"B":1,"C":2,"D":3,"E":4,"F":5,"f":6,"e":7,"d":8,"c":9,"b":10,"a":11}[self.entree.get()]
@@ -143,7 +156,7 @@ class Application(Tk):
             self.affiche_correctif("Saisie incorecte")
             return None
         finally:
-            self.entree.delete(0)
+            self.entree.delete(0, len(self.entree.get()))
         if not t in self.p.jouables:
             self.affiche_correctif("Tu ne peux pas jouer cela.")
             return None

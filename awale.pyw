@@ -123,7 +123,7 @@ class Application(Tk):
     def debut_jeu(self):        # Au début d'une partie
         self.p = Partie()
         if self.id_couronne:
-            canvas.delete(self.id_couronne)
+            self.canvas.delete(self.id_couronne)
         self.ecrire_nombres(self.p.liste)
         self.ecrire_scores((self.p.score[0], self.p.score[1]))
         self.affiche_joueur()
